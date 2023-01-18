@@ -24,7 +24,7 @@ const CardDataUploader = ({ cardData, updateCardData }) => {
         onChange={handleInputChange}
         size="xs"
         resize="vertical"
-        height="200px"
+        height="150px"
       />
     </FormControl>
   );

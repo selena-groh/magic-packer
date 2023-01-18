@@ -5,6 +5,17 @@ import CardGroupAccordionItem from "components/CardGroupAccordionItem";
 import { COLORS } from "src/magic_constants";
 import { bucketCardsByColor } from "src/magic_helpers";
 
+function getNumberOfCardsText(cards) {
+  if (typeof cards?.length === "undefined") {
+    return "";
+  }
+  if (cards?.length === 1) {
+    return ` (${cards?.length} card)`;
+  } else {
+    return ` (${cards?.length} cards)`;
+  }
+}
+
 const Packer = ({
   cardsOfEachColor,
   cardsPerPack,
@@ -107,16 +118,14 @@ const Packer = ({
       <Heading as="h2" size="xl">
         Packs
       </Heading>
-      <SimpleGrid
-        columns={{ sm: 1, md: 2 }}
-        spacing={{ sm: 0, md: "40px" }}
-        mb={{ sm: 0, md: "40px" }}
-      >
+      <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={{ sm: 0, md: "40px" }}>
         <Accordion allowMultiple>
           {filledPacks.slice(0, halfOfFilledPacksIndex).map((pack) => (
             <CardGroupAccordionItem
               key={pack?.packNum}
-              title={`Pack #${pack.packNum} (${pack?.cards?.length} cards)`}
+              title={`Pack #${pack.packNum}${getNumberOfCardsText(
+                pack?.cards
+              )}`}
               cards={pack?.cards}
             />
           ))}
@@ -126,28 +135,39 @@ const Packer = ({
             return (
               <CardGroupAccordionItem
                 key={pack?.packNum}
-                title={`Pack #${pack.packNum} (${pack?.cards?.length} cards)`}
+                title={`Pack #${pack.packNum}${getNumberOfCardsText(
+                  pack?.cards
+                )}`}
                 cards={pack?.cards}
               />
             );
           })}
         </Accordion>
       </SimpleGrid>
-      <Heading as="h2" size="xl">
+      <Heading as="h2" size="xl" mt="40px">
         Leftover Cards
       </Heading>
       <Accordion allowMultiple>
         <CardGroupAccordionItem
-          title={`All Leftover Cards (${leftoverCards?.length} cards)`}
+          title={`All Leftover Cards${getNumberOfCardsText(leftoverCards)}`}
           cards={leftoverCards}
         />
         {Object.entries(leftoverBucketedCards).map(([color, cards]) => (
           <CardGroupAccordionItem
             key={color}
-            title={`${color} Cards (${cards?.length} cards)`}
+            title={`${color} Cards${getNumberOfCardsText(cards)}`}
             cards={cards}
           />
         ))}
+      </Accordion>
+      <Heading as="h2" size="xl" mt="40px">
+        All Cards
+      </Heading>
+      <Accordion allowMultiple>
+        <CardGroupAccordionItem
+          title={`All Cards${getNumberOfCardsText(cardData)}`}
+          cards={cardData}
+        />
       </Accordion>
     </>
   );

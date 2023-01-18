@@ -59,6 +59,7 @@ const ConfigurablePacker = () => {
           </FormErrorMessage>
         )}
       </FormControl>
+      <CardDataUploader cardData={cardData} updateCardData={setCardData} />
       <Packer
         key={configChangedCount}
         cardsOfEachColor={cardsOfEachColor}
@@ -66,7 +67,6 @@ const ConfigurablePacker = () => {
         numOfPacks={numOfPacks}
         cardData={cardData}
       />
-      <CardDataUploader cardData={cardData} updateCardData={setCardData} />
     </>
   );
 };
