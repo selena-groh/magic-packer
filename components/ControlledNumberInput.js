@@ -12,7 +12,9 @@ const ControlledNumberInput = ({ label, name, value, updateValue }) => {
     <div>
       <FormLabel>{label}</FormLabel>
       <NumberInput
-        onChange={(valueString) => updateValue(parseInt(valueString))}
+        onChange={(valueString) =>
+          updateValue(valueString ? parseInt(valueString) : 0)
+        }
         value={value}
         name={name}
       >

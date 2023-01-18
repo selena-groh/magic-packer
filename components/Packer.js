@@ -30,7 +30,7 @@ const Packer = ({
     const colorBucket = cardToRemove.color;
     bucketedCardsRemaining[colorBucket] = bucketedCardsRemaining[
       colorBucket
-    ].filter((card) => card.indexNumber !== cardToRemove.indexNumber);
+    ]?.filter((card) => card.indexNumber !== cardToRemove.indexNumber);
   }
 
   function pickRandomCardIndex(cards) {
@@ -138,13 +138,13 @@ const Packer = ({
       </Heading>
       <Accordion allowMultiple>
         <CardGroupAccordionItem
-          title={`All Leftover Cards (${leftoverCards.length} cards)`}
+          title={`All Leftover Cards (${leftoverCards?.length} cards)`}
           cards={leftoverCards}
         />
         {Object.entries(leftoverBucketedCards).map(([color, cards]) => (
           <CardGroupAccordionItem
             key={color}
-            title={`${color} Cards (${cards.length} cards)`}
+            title={`${color} Cards (${cards?.length} cards)`}
             cards={cards}
           />
         ))}

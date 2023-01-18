@@ -15,7 +15,7 @@ yarn
 ```
 
 ### Adding Data
-1. In the [`data/card_data.js`](data/card_data.js) file, add data in the following shape:
+1. In the [`data/card_data.js`](data/card_data.js) file, add data in the following shape. Only name, color, and indexNumber are currently required. Color must be exactly "White", "Blue", "Black", "Red", "Green", "Gold", "Artifact", or "Land".
 ```js
 export const CARD_DATA = [
   {
