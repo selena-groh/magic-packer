@@ -17,5 +17,5 @@ yarn-error.log*
 # Next.js
 /.next
 
-# private magic data
-# /data/card_data.js
+# Private card data can be stored in this file
+/data/card_data.js
