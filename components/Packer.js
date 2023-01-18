@@ -132,7 +132,7 @@ const Packer = ({ cardsOfEachColor, cardsPerPack, numOfPacks }) => {
       </Heading>
       <Accordion allowMultiple>
         <CardGroupAccordionItem
-          title={`Leftover Cards (${leftoverCards.length} cards)`}
+          title={`All Leftover Cards (${leftoverCards.length} cards)`}
           cards={leftoverCards}
         />
         {Object.entries(leftoverBucketedCards).map(([color, cards]) => (
