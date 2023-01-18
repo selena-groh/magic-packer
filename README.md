@@ -15,11 +15,11 @@ yarn
 ```
 
 ### Adding Data
-1. Add a file called `card_data.js` in the `data` directory. That file should contain data in the following shape:
+1. In the [`data/card_data.js`](data/card_data.js) file, add data in the following shape:
 ```js
 export const CARD_DATA = [
   {
-    name: "Card Name Here",
+    name: "Sample White Card Name",
     cost: "2W",
     type: {
       supertype: "Creature",
@@ -28,11 +28,12 @@ export const CARD_DATA = [
     color: "White",
     indexNumber: "1",
   },
+  ...
 ];
 export const CARD_DATA_BY_COLOR = {
   White: [
     {
-      name: "Card Name Here",
+      name: "Sample Card Name",
       cost: "2W",
       type: {
         supertype: "Creature",

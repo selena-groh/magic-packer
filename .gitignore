@@ -18,4 +18,4 @@ yarn-error.log*
 /.next
 
 # private magic data
-/data/card_data.js
+# /data/card_data.js
