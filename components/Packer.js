@@ -22,8 +22,9 @@ const Packer = ({
   numOfPacks,
   cardData = CARD_DATA,
 }) => {
+  const bucketedCardData = bucketCardsByColor([...cardData]);
   let cardsRemaining = [...cardData];
-  let bucketedCardsRemaining = bucketCardsByColor([...cardData]);
+  let bucketedCardsRemaining = { ...bucketedCardData };
 
   const [leftoverCards, setLeftoverCards] = useState(cardsRemaining);
   const [leftoverBucketedCards, setLeftoverBucketedCards] = useState(
@@ -155,7 +156,7 @@ const Packer = ({
         {Object.entries(leftoverBucketedCards).map(([color, cards]) => (
           <CardGroupAccordionItem
             key={color}
-            title={`${color} Cards${getNumberOfCardsText(cards)}`}
+            title={`Leftover ${color} Cards${getNumberOfCardsText(cards)}`}
             cards={cards}
           />
         ))}
@@ -168,6 +169,13 @@ const Packer = ({
           title={`All Cards${getNumberOfCardsText(cardData)}`}
           cards={cardData}
         />
+        {Object.entries(bucketedCardData).map(([color, cards]) => (
+          <CardGroupAccordionItem
+            key={color}
+            title={`All ${color} Cards${getNumberOfCardsText(cards)}`}
+            cards={cards}
+          />
+        ))}
       </Accordion>
     </>
   );
