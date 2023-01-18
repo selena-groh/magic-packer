@@ -1,28 +1,31 @@
-import Packer from "components/Packer";
-import { Flex, FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Flex, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import Packer from "components/Packer";
 import ControlledNumberInput from "components/ControlledNumberInput";
+import CardDataUploader from "components/CardDataUploader";
 import { CARD_DATA } from "data/card_data";
 
 const CARDS_OF_EACH_COLOR = 1;
 const CARDS_PER_PACK = 15;
 const NUM_OF_PACKS = 24;
-const CARD_COUNT = CARD_DATA.length;
 
 const ConfigurablePacker = () => {
   const [cardsOfEachColor, setCardsOfEachColor] = useState(CARDS_OF_EACH_COLOR);
   const [cardsPerPack, setCardsPerPack] = useState(CARDS_PER_PACK);
   const [numOfPacks, setNumOfPacks] = useState(NUM_OF_PACKS);
 
-  // TODO: update this logic to account for cardsOfEachColor as well
-  const isError = cardsPerPack * numOfPacks > CARD_COUNT;
+  const [cardData, setCardData] = useState(CARD_DATA);
 
+  const cardCount = cardData.length;
+  // TODO: update this logic to account for cardsOfEachColor as well
+  const isError = cardsPerPack * numOfPacks > cardCount;
+
+  // This counter increments when the config changes and is used to remount the Packer so that the cards get re-packed.
   const [configChangedCount, setConfigChangedCount] = useState(0);
 
-  useEffect(
-    () => setConfigChangedCount(configChangedCount + 1),
-    [cardsOfEachColor, cardsPerPack, numOfPacks]
-  );
+  useEffect(() => {
+    setConfigChangedCount(configChangedCount + 1);
+  }, [cardsOfEachColor, cardsPerPack, numOfPacks, cardData]);
 
   return (
     <>
@@ -51,17 +54,19 @@ const ConfigurablePacker = () => {
           <FormErrorMessage>
             Warning: Not enough cards. You've requested {numOfPacks} packs with{" "}
             {cardsPerPack} cards per pack which requires{" "}
-            {numOfPacks * cardsPerPack} cards, but there are only {CARD_COUNT}{" "}
+            {numOfPacks * cardsPerPack} cards, but there are only {cardCount}{" "}
             total cards.
           </FormErrorMessage>
         )}
       </FormControl>
       <Packer
+        key={configChangedCount}
         cardsOfEachColor={cardsOfEachColor}
         cardsPerPack={cardsPerPack}
         numOfPacks={numOfPacks}
-        key={configChangedCount}
+        cardData={cardData}
       />
+      <CardDataUploader cardData={cardData} updateCardData={setCardData} />
     </>
   );
 };

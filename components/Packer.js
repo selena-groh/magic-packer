@@ -1,12 +1,18 @@
 import { Accordion, Heading, SimpleGrid } from "@chakra-ui/react";
-import { CARD_DATA, CARD_DATA_BY_COLOR } from "data/card_data";
+import { CARD_DATA } from "data/card_data";
 import { useEffect, useState } from "react";
 import CardGroupAccordionItem from "components/CardGroupAccordionItem";
 import { COLORS } from "src/magic_constants";
+import { bucketCardsByColor } from "src/magic_helpers";
 
-const Packer = ({ cardsOfEachColor, cardsPerPack, numOfPacks }) => {
-  let cardsRemaining = [...CARD_DATA];
-  let bucketedCardsRemaining = { ...CARD_DATA_BY_COLOR };
+const Packer = ({
+  cardsOfEachColor,
+  cardsPerPack,
+  numOfPacks,
+  cardData = CARD_DATA,
+}) => {
+  let cardsRemaining = [...cardData];
+  let bucketedCardsRemaining = bucketCardsByColor([...cardData]);
 
   const [leftoverCards, setLeftoverCards] = useState(cardsRemaining);
   const [leftoverBucketedCards, setLeftoverBucketedCards] = useState(

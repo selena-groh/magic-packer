@@ -19,3 +19,4 @@ yarn-error.log*
 
 # Private card data can be stored in this file
 /data/card_data.js
+/data/all_card_data.js

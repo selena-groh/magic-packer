@@ -80,6 +80,7 @@ export const CARD_DATA = [
     indexNumber: "8",
   },
 ];
+
 export const CARD_DATA_BY_COLOR = {
   White: [
     {
