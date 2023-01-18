@@ -16,6 +16,19 @@ function getNumberOfCardsText(cards) {
   }
 }
 
+function getPercentageOfCardsLeftoverText(leftoverCards, allCards) {
+  if (
+    typeof leftoverCards?.length === "undefined" ||
+    typeof allCards?.length === "undefined"
+  ) {
+    return "";
+  }
+
+  return ` -- ${Math.floor(
+    (leftoverCards?.length / allCards?.length) * 100
+  )}% of total unused in packs`;
+}
+
 const Packer = ({
   cardsOfEachColor,
   cardsPerPack,
@@ -156,7 +169,12 @@ const Packer = ({
         {Object.entries(leftoverBucketedCards).map(([color, cards]) => (
           <CardGroupAccordionItem
             key={color}
-            title={`Leftover ${color} Cards${getNumberOfCardsText(cards)}`}
+            title={`Leftover ${color} Cards${getNumberOfCardsText(
+              cards
+            )}${getPercentageOfCardsLeftoverText(
+              cards,
+              bucketedCardData[color]
+            )}`}
             cards={cards}
           />
         ))}
