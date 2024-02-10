@@ -7,8 +7,14 @@ import {
 
 const CardDataUploader = ({ cardData, updateCardData }) => {
   let handleInputChange = (e) => {
-    let inputValue = e.target.value;
-    updateCardData(JSON.parse(inputValue));
+    // Remove whitespace
+    let inputValue = e.target.value.replace(/\s+/g, "");
+
+    if (inputValue === "") {
+      updateCardData([]);
+    } else {
+      updateCardData(JSON.parse(inputValue));
+    }
   };
 
   return (
@@ -18,6 +24,11 @@ const CardDataUploader = ({ cardData, updateCardData }) => {
         Paste card data here in JSON format as an array of objects that each
         have a name, color, and indexNumber field. Color must be exactly
         "White", "Blue", "Black", "Red", "Green", "Gold", "Artifact", or "Land".
+        For help, try using{" "}
+        <a href="https://jsonformatter.curiousconcept.com/">
+          https://jsonformatter.curiousconcept.com/
+        </a>{" "}
+        on the "Compact" setting.
       </FormHelperText>
       <Textarea
         value={JSON.stringify(cardData)}
