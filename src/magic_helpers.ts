@@ -26,21 +26,21 @@ export function DO_NOT_USE_colorRepoAuthorsCards(cards) {
   return cards.map((card) => {
     if (card.indexNumber < 3) {
       return { ...card, color: COLORS.ARTIFACT }; // could be Colorless OR Artifact
-    } else if (cardNumber < 64) {
+    } else if (card.indexNumber < 64) {
       return { ...card, color: COLORS.WHITE };
-    } else if (cardNumber < 126) {
+    } else if (card.indexNumber < 126) {
       return { ...card, color: COLORS.BLUE };
-    } else if (cardNumber < 188) {
+    } else if (card.indexNumber < 188) {
       return { ...card, color: COLORS.BLACK };
-    } else if (cardNumber < 251) {
+    } else if (card.indexNumber < 251) {
       return { ...card, color: COLORS.RED };
-    } else if (cardNumber < 311) {
+    } else if (card.indexNumber < 311) {
       return { ...card, color: COLORS.GREEN };
-    } else if (cardNumber < 394) {
+    } else if (card.indexNumber < 394) {
       return { ...card, color: COLORS.GOLD };
-    } else if (cardNumber < 471) {
+    } else if (card.indexNumber < 471) {
       return { ...card, color: COLORS.ARTIFACT };
-    } else if (cardNumber <= 540) {
+    } else if (card.indexNumber <= 540) {
       return { ...card, color: COLORS.LAND };
     } else {
       return { ...card, color: "UNKNOWN" };
@@ -50,8 +50,8 @@ export function DO_NOT_USE_colorRepoAuthorsCards(cards) {
 
 // General Algorithm to color cards
 //
-// 1. if card.type.supertype contains "Land" -> Land
-// 2. if card.cost contains more than 1 WUBRG -> Gold
+// 1. if card.type.supertype or card.type contains "Land" -> Land
+// 2. if card.cost contains more than 1 WUBRG OR type is Prophecy -> Gold
 //     - strip out all characters besides WUBRG
 //     - deduplicate so that WW becomes W
 //     - check that character count is 2+
