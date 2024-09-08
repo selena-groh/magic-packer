@@ -1,21 +1,16 @@
 "use client";
 
-import { Heading, Text } from "@chakra-ui/react";
 import React from "react";
-import ConfigurablePacker from "@/components/ConfigurablePacker";
+import { Link } from "@chakra-ui/next-js";
+import { Flex } from "@chakra-ui/react";
 
 const Home = () => {
   return (
-    <>
-      <Heading as="h1" size="2xl">
-        Magic Packer
-      </Heading>
-      <Text color="gray.600">
-        Generate randomized packs of Magic: The Gathering cards for draft or
-        sealed.
-      </Text>
-      <ConfigurablePacker />
-    </>
+    <Flex direction={["column", "row"]} gap="32px" justify="flex-start">
+      <Link href="/packer">Get Packing!</Link>
+      <Link href="/parser">Get Parsing! (WIP)</Link>
+      <Link href="/pack">View an individual pack (WIP)</Link>
+    </Flex>
   );
 };
 

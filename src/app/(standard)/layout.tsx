@@ -1,4 +1,4 @@
-import { Flex, Container } from "@chakra-ui/react";
+import { Flex, Container, Heading, Text } from "@chakra-ui/react";
 import { SkipNavLink, SkipNavContent } from "@chakra-ui/skip-nav";
 
 const Layout = ({ children }) => {
@@ -13,6 +13,13 @@ const Layout = ({ children }) => {
           maxWidth="1000px"
         >
           <SkipNavContent />
+          <Heading as="h1" size="2xl">
+            Magic Packer
+          </Heading>
+          <Text color="gray.600" mb="32px">
+            Generate randomized packs of Magic: The Gathering cards for draft or
+            sealed.
+          </Text>
           {children}
         </Container>
       </main>
