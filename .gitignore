@@ -17,5 +17,7 @@ yarn-error.log*
 # Next.js
 /.next
 
-# Private card data can be stored in these files
-/data
+# Private card data can be stored in the /data folder
+/data/*
+# Exempt the sample data
+!/data/sample*
