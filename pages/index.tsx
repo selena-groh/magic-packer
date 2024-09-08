@@ -1,6 +1,6 @@
-import Layout from "components/layout/Layout";
+import Layout from "src/layout/Layout";
 import { Heading, Text } from "@chakra-ui/react";
-import ConfigurablePacker from "components/ConfigurablePacker";
+import ConfigurablePacker from "src/components/ConfigurablePacker";
 
 const Home = () => (
   <Layout>

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import chakraTheme from "src/theme";
+import chakraTheme from "src/utilities/theme";
 import { ChakraProvider } from "@chakra-ui/react";
 
 // Client-side cache, shared for the whole session of the user in the browser.

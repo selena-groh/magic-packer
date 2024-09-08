@@ -5,9 +5,16 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
-import MagicCard from "components/MagicCard";
+import MagicCard from "src/components/MagicCard";
+import { Card } from "src/utilities/types";
 
-const CardGroupAccordionItem = ({ title, cards }) => {
+const CardGroupAccordionItem = ({
+  title,
+  cards,
+}: {
+  title: string;
+  cards: Card[];
+}) => {
   return (
     <AccordionItem>
       <h3>
@@ -23,7 +30,7 @@ const CardGroupAccordionItem = ({ title, cards }) => {
           {cards?.map(
             (card) =>
               card && (
-                <li key={`${title}-${card?.indexNumber}`}>
+                <li key={`${title}-${card?.name}`}>
                   <MagicCard card={card} />
                 </li>
               )

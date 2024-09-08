@@ -7,7 +7,17 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 
-const ControlledNumberInput = ({ label, name, value, updateValue }) => {
+const ControlledNumberInput = ({
+  label,
+  name,
+  value,
+  updateValue,
+}: {
+  label: string;
+  name: string;
+  value: number;
+  updateValue: (number) => void;
+}) => {
   return (
     <div>
       <FormLabel>{label}</FormLabel>

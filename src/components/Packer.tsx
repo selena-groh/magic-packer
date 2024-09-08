@@ -1,11 +1,10 @@
 import { Accordion, Heading, SimpleGrid } from "@chakra-ui/react";
-import { CARD_DATA } from "data/card_data";
 import { useEffect, useState } from "react";
-import CardGroupAccordionItem from "components/CardGroupAccordionItem";
-import { COLORS } from "src/magic_constants";
-import { bucketCardsByColor } from "src/magic_helpers";
+import CardGroupAccordionItem from "src/components/CardGroupAccordionItem";
+import { Card, Color, Pack } from "src/utilities/types";
+import { bucketCardsByColor, sortCards } from "src/utilities/magic_helpers";
 
-function getNumberOfCardsText(cards) {
+function getNumberOfCardsText(cards: Card[]): string {
   if (typeof cards?.length === "undefined") {
     return "";
   }
@@ -16,7 +15,10 @@ function getNumberOfCardsText(cards) {
   }
 }
 
-function getPercentageOfCardsLeftoverText(leftoverCards, allCards) {
+function getPercentageOfCardsLeftoverText(
+  leftoverCards: Card[],
+  allCards: Card[]
+): string {
   if (
     typeof leftoverCards?.length === "undefined" ||
     typeof allCards?.length === "undefined"
@@ -29,40 +31,45 @@ function getPercentageOfCardsLeftoverText(leftoverCards, allCards) {
   )}% of total unused in packs`;
 }
 
+function pickRandomCardIndex(cards: Card[]): number {
+  return Math.floor(Math.random() * cards.length);
+}
+
 const Packer = ({
   cardsOfEachColor,
   cardsPerPack,
   numOfPacks,
-  cardData = CARD_DATA,
+  cardData,
+}: {
+  cardsOfEachColor: number;
+  cardsPerPack: number;
+  numOfPacks: number;
+  cardData: Card[];
 }) => {
   const bucketedCardData = bucketCardsByColor([...cardData]);
   let cardsRemaining = [...cardData];
   let bucketedCardsRemaining = { ...bucketedCardData };
 
-  const [leftoverCards, setLeftoverCards] = useState(cardsRemaining);
+  const [leftoverCards, setLeftoverCards] = useState<Card[]>(cardsRemaining);
   const [leftoverBucketedCards, setLeftoverBucketedCards] = useState(
     bucketedCardsRemaining
   );
 
   const packs = new Array(numOfPacks).fill({});
-  const [filledPacks, setFilledPacks] = useState([]);
+  const [filledPacks, setFilledPacks] = useState<Pack[]>([]);
 
-  function removeCard(cardToRemove) {
+  function removeCard(cardToRemove: Card) {
     cardsRemaining = cardsRemaining.filter(
-      (card) => card.indexNumber !== cardToRemove.indexNumber
+      (card) => card.name !== cardToRemove.name
     );
 
     const colorBucket = cardToRemove.color;
     bucketedCardsRemaining[colorBucket] = bucketedCardsRemaining[
       colorBucket
-    ]?.filter((card) => card.indexNumber !== cardToRemove.indexNumber);
+    ]?.filter((card) => card.name !== cardToRemove.name);
   }
 
-  function pickRandomCardIndex(cards) {
-    return Math.floor(Math.random() * cards.length);
-  }
-
-  function pickCard(cards) {
+  function pickCard(cards: Card[]): Card {
     if (cards.length === 0) {
       return;
     }
@@ -72,7 +79,7 @@ const Packer = ({
     return pickedCard;
   }
 
-  function pickNCards(n) {
+  function pickNCards(n: number): Card[] {
     const pickedCards = [];
     for (let i = 0; i < n; i++) {
       const pickedCard = pickCard(cardsRemaining);
@@ -83,8 +90,8 @@ const Packer = ({
     return pickedCards;
   }
 
-  function pickNCardsOfEachColor(n) {
-    const pickedCards = [];
+  function pickNCardsOfEachColor(n: number): Card[] {
+    const pickedCards: Card[] = [];
 
     function pushIfDefined(obj) {
       if (obj) {
@@ -93,14 +100,14 @@ const Packer = ({
     }
 
     for (let i = 0; i < n; i++) {
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.WHITE]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.BLUE]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.BLACK]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.RED]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.GREEN]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.GOLD]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.ARTIFACT]));
-      pushIfDefined(pickCard(bucketedCardsRemaining[COLORS.LAND]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.White]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Blue]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Black]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Red]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Green]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Gold]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Colorless]));
+      pushIfDefined(pickCard(bucketedCardsRemaining[Color.Land]));
     }
     return pickedCards;
   }
@@ -114,7 +121,7 @@ const Packer = ({
       const allPickedCards = [
         ...pickedCardsOfEachColor,
         ...pickedRandomCards,
-      ].sort((a, b) => a.indexNumber - b.indexNumber);
+      ].sort(sortCards);
       return {
         packNum: index + 1,
         cards: allPickedCards,
