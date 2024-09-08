@@ -52,8 +52,8 @@ function createPacks({
     // }
   }
 
-  function pickCard(cards: Card[]): Card {
-    if (cards.length === 0) {
+  function pickCard(cards: Card[] | undefined): Card | undefined {
+    if (!cards || cards?.length === 0) {
       return;
     }
     const randomCardIndex = pickRandomCardIndex(cards);
@@ -63,7 +63,7 @@ function createPacks({
   }
 
   function pickNCards(n: number): Card[] {
-    const pickedCards = [];
+    const pickedCards: Card[] = [];
     for (let i = 0; i < n; i++) {
       const pickedCard = pickCard(cardsRemaining);
       if (pickedCard) {

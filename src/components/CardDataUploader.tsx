@@ -36,7 +36,7 @@ const CardDataUploader = ({ updateCardData }) => {
   };
 
   return (
-    <FormControl my="32px" isInvalid={error}>
+    <FormControl my="32px" isInvalid={Boolean(error)}>
       <FormErrorMessage>Error parsing card data: {error}</FormErrorMessage>
       <FormLabel>Card Data</FormLabel>
       <FormHelperText mb="8px">
