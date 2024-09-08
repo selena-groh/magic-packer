@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import CARD_DATA from "data/sample_card_data.json";
-import { getColorFromCard } from "src/utilities/magic_helpers";
+import { getColorFromCard } from "@/utilities/magic_helpers";
 
 const CardDataUploader = ({ updateCardData }) => {
   const [value, setValue] = useState(JSON.stringify(CARD_DATA));

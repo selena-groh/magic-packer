@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, CardBuckets, Color, Pack } from "src/utilities/types";
+import { Card, CardBuckets, Color, Pack } from "@/utilities/types";
 
 function pickRandomCardIndex(cards: Card[]): number {
   return Math.floor(Math.random() * cards.length);

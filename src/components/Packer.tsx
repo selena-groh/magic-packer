@@ -1,8 +1,8 @@
 import { Accordion, Heading, SimpleGrid } from "@chakra-ui/react";
-import CardGroupAccordionItem from "src/components/CardGroupAccordionItem";
-import { Card } from "src/utilities/types";
+import CardGroupAccordionItem from "@/components/CardGroupAccordionItem";
+import { Card } from "@/utilities/types";
 import useCreatePacks from "./useCreatePacks";
-import { bucketCardsByColor } from "src/utilities/magic_helpers";
+import { bucketCardsByColor } from "@/utilities/magic_helpers";
 
 function getNumberOfCardsText(cards: Card[]): string {
   if (typeof cards?.length === "undefined") {

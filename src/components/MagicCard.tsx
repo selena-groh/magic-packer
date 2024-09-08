@@ -1,5 +1,5 @@
 import { Badge } from "@chakra-ui/react";
-import { Card, Color } from "src/utilities/types";
+import { Card, Color } from "@/utilities/types";
 
 const COLOR_TO_BADGE_COLOR: { [key in Color]: string } = {
   [Color.White]: "gray",

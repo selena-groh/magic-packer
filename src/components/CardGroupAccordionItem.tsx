@@ -5,9 +5,9 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
-import MagicCard from "src/components/MagicCard";
-import { sortCards } from "src/utilities/magic_helpers";
-import { Card } from "src/utilities/types";
+import MagicCard from "@/components/MagicCard";
+import { sortCards } from "@/utilities/magic_helpers";
+import { Card } from "@/utilities/types";
 
 const CardGroupAccordionItem = ({
   title,
