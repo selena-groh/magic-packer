@@ -1,38 +1,55 @@
 import { useEffect, useState } from "react";
-import { Card, Color, Pack } from "src/utilities/types";
-import { bucketCardsByColor, sortCards } from "src/utilities/magic_helpers";
+import { Card, CardBuckets, Color, Pack } from "src/utilities/types";
 
 function pickRandomCardIndex(cards: Card[]): number {
   return Math.floor(Math.random() * cards.length);
 }
 
-function useCreatePacks({
+function createPacks({
   cardsOfEachColor,
   cardsPerPack,
   numOfPacks,
   cardData,
-}) {
-  const bucketedCardData = bucketCardsByColor([...cardData]);
+  bucketedCardData,
+}: {
+  cardsOfEachColor: number;
+  cardsPerPack: number;
+  numOfPacks: number;
+  cardData: Card[];
+  bucketedCardData: CardBuckets;
+}): {
+  filledPacks: Pack[];
+  leftoverCards: Card[];
+  leftoverBucketedCards: CardBuckets;
+} {
   let cardsRemaining = [...cardData];
   let bucketedCardsRemaining = { ...bucketedCardData };
-
-  const [leftoverCards, setLeftoverCards] = useState<Card[]>(cardsRemaining);
-  const [leftoverBucketedCards, setLeftoverBucketedCards] = useState(
-    bucketedCardsRemaining
-  );
-
-  const packs = new Array(numOfPacks).fill({});
-  const [filledPacks, setFilledPacks] = useState<Pack[]>([]);
 
   function removeCard(cardToRemove: Card) {
     cardsRemaining = cardsRemaining.filter(
       (card) => card.name !== cardToRemove.name
     );
 
-    const colorBucket = cardToRemove.color;
+    // This is here because Artifact and Colorless are sometimes treated interchangeably, but this website treats them as the same
+    const colorBucket =
+      cardToRemove.color === Color.Artifact
+        ? Color.Colorless
+        : cardToRemove.color;
     bucketedCardsRemaining[colorBucket] = bucketedCardsRemaining[
       colorBucket
     ]?.filter((card) => card.name !== cardToRemove.name);
+
+    // Artifact and Colorless are sometimes treated interchangeably,
+    // So make sure we remove the card from the other bucket too
+    // if (colorBucket === Color.Artifact) {
+    //   bucketedCardsRemaining[Color.Colorless] = bucketedCardsRemaining[
+    //     Color.Colorless
+    //   ]?.filter((card) => card.name !== cardToRemove.name);
+    // } else if (colorBucket === Color.Colorless) {
+    //   bucketedCardsRemaining[Color.Artifact] = bucketedCardsRemaining[
+    //     Color.Artifact
+    //   ]?.filter((card) => card.name !== cardToRemove.name);
+    // }
   }
 
   function pickCard(cards: Card[]): Card {
@@ -78,29 +95,51 @@ function useCreatePacks({
     return pickedCards;
   }
 
+  const packs = new Array(numOfPacks).fill({});
+  const newPacks = packs.map((_, index) => {
+    const pickedCardsOfEachColor = pickNCardsOfEachColor(cardsOfEachColor);
+    const pickedRandomCards = pickNCards(
+      cardsPerPack - pickedCardsOfEachColor.length
+    );
+    const allPickedCards = pickedCardsOfEachColor.concat(pickedRandomCards);
+    return {
+      packNum: index + 1,
+      cards: allPickedCards,
+    };
+  });
+
+  return {
+    filledPacks: newPacks,
+    leftoverCards: cardsRemaining,
+    leftoverBucketedCards: bucketedCardsRemaining,
+  };
+}
+
+function useCreatePacks(args: {
+  cardsOfEachColor: number;
+  cardsPerPack: number;
+  numOfPacks: number;
+  cardData: Card[];
+  bucketedCardData: CardBuckets;
+}): {
+  filledPacks: Pack[];
+  leftoverCards: Card[];
+  leftoverBucketedCards: CardBuckets;
+} {
+  const [filledPacks, setFilledPacks] = useState<Pack[]>([]);
+  const [leftoverCards, setLeftoverCards] = useState<Card[]>([]);
+  const [leftoverBucketedCards, setLeftoverBucketedCards] =
+    useState<CardBuckets>({});
+
   useEffect(() => {
-    const newPacks = packs.map((pack, index) => {
-      const pickedCardsOfEachColor = pickNCardsOfEachColor(cardsOfEachColor);
-      const pickedRandomCards = pickNCards(
-        cardsPerPack - pickedCardsOfEachColor.length
-      );
-      const allPickedCards = [
-        ...pickedCardsOfEachColor,
-        ...pickedRandomCards,
-      ].sort(sortCards);
-      return {
-        packNum: index + 1,
-        cards: allPickedCards,
-      };
-    });
-    setFilledPacks(newPacks);
-    setLeftoverCards(cardsRemaining);
-    setLeftoverBucketedCards(bucketedCardsRemaining);
+    const result = createPacks(args);
+    setFilledPacks(result.filledPacks);
+    setLeftoverCards(result.leftoverCards);
+    setLeftoverBucketedCards(result.leftoverBucketedCards);
   }, []);
 
   return {
     filledPacks,
-    bucketedCardData,
     leftoverCards,
     leftoverBucketedCards,
   };

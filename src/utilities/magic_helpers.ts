@@ -1,4 +1,11 @@
-import { Card, Color, isManaCost, ManaCost, RawCard } from "./types";
+import {
+  Card,
+  CardBuckets,
+  Color,
+  isManaCost,
+  ManaCost,
+  RawCard,
+} from "./types";
 
 // Note: to obtain indexNumber (e.g. 51) from a number (e.g. 51/540), you can run card.number.split("/")[0]
 export function getIndexNumberFromTotalNumber(
@@ -25,7 +32,7 @@ export function splitManaCostIntoArray(mana_cost: string): ManaCost[] {
   return manaCosts;
 }
 
-export function bucketCardsByColor(cards: Card[]): { [key in Color]?: Card[] } {
+export function bucketCardsByColor(cards: Card[]): CardBuckets {
   return {
     [Color.White]: cards.filter((card) => card.color === Color.White),
     [Color.Blue]: cards.filter((card) => card.color === Color.Blue),
@@ -33,6 +40,7 @@ export function bucketCardsByColor(cards: Card[]): { [key in Color]?: Card[] } {
     [Color.Red]: cards.filter((card) => card.color === Color.Red),
     [Color.Green]: cards.filter((card) => card.color === Color.Green),
     [Color.Gold]: cards.filter((card) => card.color === Color.Gold),
+    // Currently, Artifact and Colorless are treated interchangeably, but you could also add a Color.Artifact here and change code in useCreatePacks to treat them separately
     [Color.Colorless]: cards.filter(
       (card) => card.color === Color.Artifact || card.color === Color.Colorless
     ),
@@ -42,34 +50,37 @@ export function bucketCardsByColor(cards: Card[]): { [key in Color]?: Card[] } {
 
 // General Algorithm to color cards
 //
-// 1. if card.type.supertype or card.type contains "Land" -> Land
-// 2. if card.cost contains more than 1 WUBRG OR type is Prophecy -> Gold
-//     - strip out all characters besides WUBRG
-//     - deduplicate so that WW becomes W
-//     - check that character count is 2+
+// 1. if card.type contains "Land" -> Land
+// 2. if card.cost contains more than 1 WUBRG OR card.type is Prophecy -> Gold
 // 3. if card.cost contains W -> White
 // 4. if card.cost contains U -> Blue
 // 5. if card.cost contains B -> Black
 // 6. if card.cost contains R -> Red
 // 7. if card.cost contains G -> Green
-// 8. else -> Artifact
+// 8. else -> Colorless
 
 // --- OR ---
-// 8. if card.type.supertype contains "Artifact" -> Artifact
+// 8. if card.type contains "Artifact" -> Artifact
 // 9. else -> Colorless
 
 const MANA_AFFECTING_CARD_COLOR = ["W", "U", "B", "R", "G"];
 
 export function getColorFromManaCost(mana_cost: string): Color {
+  // Strip out all characters besides WUBRG
   const coloredManaChars = mana_cost
     .split("")
     .filter((char) => MANA_AFFECTING_CARD_COLOR.includes(char));
+
+  // Deduplicate so that WW becomes W
   var deduplicatedColoredManaChars = new Set(coloredManaChars);
+
+  // If there's more than one color in the deduplicated set, the card is gold
   if (deduplicatedColoredManaChars.size > 1) {
     return Color.Gold;
   }
-  const setIter = deduplicatedColoredManaChars.keys();
 
+  // Else, there's only one color (or zero) so we return the appropriate color
+  const setIter = deduplicatedColoredManaChars.keys();
   switch (setIter.next().value) {
     case "W":
       return Color.White;

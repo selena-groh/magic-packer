@@ -8,20 +8,25 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import CARD_DATA from "data/card_data.json";
+import { getColorFromCard } from "src/utilities/magic_helpers";
 
 const CardDataUploader = ({ updateCardData }) => {
   const [value, setValue] = useState(JSON.stringify(CARD_DATA));
   const [error, setError] = useState(null);
 
   let handleSubmit = () => {
-    // Remove whitespace
-    // let inputValue = value.replace(/\s+/g, "");
-
     if (value === "") {
       updateCardData([]);
     } else {
       try {
-        const data = JSON.parse(value);
+        let data = JSON.parse(value);
+        // Hack for author's data to generate color
+        if (data && data[0] && !data[0].color && data[0].mana_cost) {
+          data = data.map((card) => ({
+            ...card,
+            color: getColorFromCard(card),
+          }));
+        }
         updateCardData(data);
         setError(null);
       } catch (e) {
@@ -36,9 +41,11 @@ const CardDataUploader = ({ updateCardData }) => {
       <FormLabel>Card Data</FormLabel>
       <FormHelperText mb="8px">
         Paste card data here in JSON format as an array of objects that each
-        have a name, color, and indexNumber field. Color must be exactly
-        "White", "Blue", "Black", "Red", "Green", "Gold", "Colorless", or
-        "Land". For help, try using{" "}
+        have a name, color, and optional indexNumber field. Color must be
+        exactly "White", "Blue", "Black", "Red", "Green", "Gold", "Colorless",
+        or "Land".
+        <br />
+        For help, try using{" "}
         <a href="https://jsonformatter.curiousconcept.com/">
           https://jsonformatter.curiousconcept.com/
         </a>{" "}

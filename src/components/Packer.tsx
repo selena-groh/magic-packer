@@ -2,6 +2,7 @@ import { Accordion, Heading, SimpleGrid } from "@chakra-ui/react";
 import CardGroupAccordionItem from "src/components/CardGroupAccordionItem";
 import { Card } from "src/utilities/types";
 import useCreatePacks from "./useCreatePacks";
+import { bucketCardsByColor } from "src/utilities/magic_helpers";
 
 function getNumberOfCardsText(cards: Card[]): string {
   if (typeof cards?.length === "undefined") {
@@ -34,23 +35,21 @@ const Packer = ({
   cardsOfEachColor,
   cardsPerPack,
   numOfPacks,
-  cardData,
+  cardData = [],
 }: {
   cardsOfEachColor: number;
   cardsPerPack: number;
   numOfPacks: number;
   cardData: Card[];
 }) => {
-  const {
-    filledPacks,
-    bucketedCardData,
-    leftoverCards,
-    leftoverBucketedCards,
-  } = useCreatePacks({
+  const bucketedCardData = bucketCardsByColor(cardData);
+
+  const { filledPacks, leftoverCards, leftoverBucketedCards } = useCreatePacks({
     cardsOfEachColor,
     cardsPerPack,
     numOfPacks,
     cardData,
+    bucketedCardData,
   });
 
   const halfOfFilledPacksIndex = Math.ceil(filledPacks.length / 2);
