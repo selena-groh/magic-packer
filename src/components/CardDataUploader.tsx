@@ -7,7 +7,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import CARD_DATA from "data/card_data.json";
+import CARD_DATA from "data/sample_card_data.json";
 import { getColorFromCard } from "src/utilities/magic_helpers";
 
 const CardDataUploader = ({ updateCardData }) => {
