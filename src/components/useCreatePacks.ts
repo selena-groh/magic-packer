@@ -100,6 +100,7 @@ function useCreatePacks({
 
   return {
     filledPacks,
+    bucketedCardData,
     leftoverCards,
     leftoverBucketedCards,
   };
