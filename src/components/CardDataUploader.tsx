@@ -45,6 +45,7 @@ const CardDataUploader = ({ updateCardData }) => {
         exactly "White", "Blue", "Black", "Red", "Green", "Gold", "Colorless",
         or "Land".
         <br />
+        <br />
         For help, try using{" "}
         <a href="https://jsonformatter.curiousconcept.com/">
           https://jsonformatter.curiousconcept.com/

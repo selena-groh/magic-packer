@@ -1,5 +1,6 @@
 import { Badge } from "@chakra-ui/react";
 import { Card, Color } from "@/utilities/types";
+import Image from "next/image";
 
 const COLOR_TO_BADGE_COLOR: { [key in Color]: string } = {
   [Color.White]: "gray",
@@ -14,7 +15,9 @@ const COLOR_TO_BADGE_COLOR: { [key in Color]: string } = {
 };
 
 const MagicCard = ({ card }: { card: Card }) => {
-  return (
+  return card.image ? (
+    <Image alt={card.name} src={card.image} width={375} height={523} />
+  ) : (
     <Badge
       variant={card.color === Color.White ? "outline" : "solid"}
       colorScheme={COLOR_TO_BADGE_COLOR[card.color]}

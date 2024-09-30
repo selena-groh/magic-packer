@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
           flexGrow="1"
           py={{ base: 8, md: 16 }}
           px={4}
-          maxWidth="1000px"
+          maxWidth="1200px"
         >
           <SkipNavContent />
           <Heading as="h1" size="2xl">

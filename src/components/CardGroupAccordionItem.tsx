@@ -5,7 +5,7 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
-import MagicCard from "@/components/MagicCard";
+import MagicCardBadge from "@/components/MagicCardBadge";
 import { sortCards } from "@/utilities/magic_helpers";
 import { Card } from "@/utilities/types";
 
@@ -16,6 +16,7 @@ const CardGroupAccordionItem = ({
   title: string;
   cards: Card[];
 }) => {
+  const sortedCards = cards?.sort(sortCards);
   return (
     <AccordionItem>
       <h3>
@@ -28,11 +29,11 @@ const CardGroupAccordionItem = ({
       </h3>
       <AccordionPanel pb={4}>
         <Box as="ol" px={6} py={2}>
-          {cards?.sort(sortCards)?.map(
+          {sortedCards.map(
             (card) =>
               card && (
                 <li key={`${title}-${card?.name}`}>
-                  <MagicCard card={card} />
+                  <MagicCardBadge card={card} />
                 </li>
               )
           )}
