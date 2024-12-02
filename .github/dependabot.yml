@@ -14,15 +14,8 @@ updates:
     reviewers:
       - "selena-groh"
     groups:
-      # Group all minor & patch upgrades to production dependencies
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-          - "minor"
-          - "patch"
-      # Group all minor & patch upgrades to development dependencies
-      development-dependencies:
-        dependency-type: "development"
+      # Group all minor & patch upgrades to production & development dependencies
+      dependencies:
         update-types:
           - "minor"
           - "patch"
